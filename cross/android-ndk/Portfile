@@ -3,31 +3,31 @@
 PortSystem          1.0
 
 name                android-ndk
-version             r16b
+version             r17b
 
 categories          java cross devel
 maintainers         nomaintainer
-license		    Apache-2
+license		          Apache-2
 platforms           darwin
 description         Android NDK
-long_description  ${description} allows native development \
-                  for the Android mobile platform.
+long_description    ${description} allows native development \
+                    for the Android mobile platform.
 supported_archs	    noarch
 
-set prog    ${name}-${version}-darwin-x86.zip
+set prog            ${name}-${version}-darwin-x86.zip
 
-homepage	    https://developer.android.com/
-master_sites	https://dl.google.com/android/repository
+homepage            https://developer.android.com/
+master_sites        https://dl.google.com/android/repository
 
-use_zip           yes
-extract.mkdir     no
+use_zip             yes
+extract.mkdir       no
 
 distname            ${name}-${version}-darwin-x86_64
 worksrcdir          android-ndk-${version}
 
-checksums rmd160  295b861433bd6e9980cf441d718643c19147c173 \
-sha256  9654a692ed97713e35154bfcacb0028fdc368128d636326f9644ed83eec5d88b \
-              size 839630771
+checksums           rmd160  16a77296153f9ab4153c81c7a6856365f9b1b891 \
+                    sha256  d21072c04ffcf8a723a4dba3837c886bd30c18c0623a4d0ddc53850e2222d27f \
+                    size    675091244
 
 use_configure       no
 build.cmd           true
@@ -48,7 +48,7 @@ set ANDROID_NDK to ${prefix}/share/java/android-ndk-${version}-darwin-x86_64??
 "
 # declare +devel variant
 variant devel description {beta version } {
-version     r17-beta1
-checksums sha1 883d7d1be3007637de7f2f2cb1f1bb66193d89e0 \
-    size 679061122
+    version       r17-beta2
+    checksums     sha1 883d7d1be3007637de7f2f2cb1f1bb66193d89e0 \
+                  size 679061122
 }
