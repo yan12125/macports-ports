@@ -1,0 +1,47 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+# TODO: select, test, upstreaming removal of urllib3 upbound
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-kaggle
+version             1.5.0
+
+platforms           darwin
+supported_archs     noarch
+license             Apache-2
+
+maintainers         {yan12125 @yan12125} openmaintainer
+
+description         Official Kaggle API
+
+long_description    ${description}
+
+homepage            https://github.com/Kaggle/kaggle-api
+
+distname            ${python.rootname}-${version}
+master_sites        pypi:k/kaggle
+
+checksums           rmd160  5f390c6c27f02b75da3dd3677829b76cb8173eff \
+                    sha256  371b217113bce7d332bd2cc4980bc20590a2cd6d333ec49df86ae44fc56733d0 \
+                    size    53143
+
+python.versions     37
+
+if {${name} ne ${subport}} {
+    depends_lib-append      port:py${python.version}-setuptools \
+                            port:py${python.version}-urllib3 \
+                            port:py${python.version}-six \
+                            port:py${python.version}-certifi \
+                            port:py${python.version}-dateutil \
+                            port:py${python.version}-requests \
+                            port:py${python.version}-tqdm \
+                            port:py${python.version}-slugify
+
+    post-extract {
+        reinplace "s|, <.*'|'|" setup.py
+    }
+
+    livecheck.type  none
+}
