@@ -1,13 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem 1.0
-PortGroup github 1.0
-PortGroup cmake 1.0
+PortGroup               github 1.0
+PortGroup               cmake 1.1
 
 github.setup            neovim neovim 0.3.8 v
 categories              editors
 platforms               darwin
 maintainers             {raimue @raimue} \
+                        {yan12125 @yan12125} \
                         openmaintainer
 license                 Apache-2 Vim GPL-2+
 
@@ -26,7 +27,11 @@ checksums               rmd160  9f68a5c07083e5fae9be4c53e15798cdcfd857f6 \
 # https://github.com/neovim/neovim/issues/9687
 patchfiles              patch-issue9687.diff
 
-depends_build-append    port:pkgconfig
+depends_build-append    port:pkgconfig \
+                        port:lua \
+                        port:lua-lpeg \
+                        port:lua-mpack \
+                        port:lua-luabitop
 
 depends_lib             port:gettext \
                         port:libuv \
@@ -35,13 +40,7 @@ depends_lib             port:gettext \
                         port:unibilium \
                         port:jemalloc \
                         port:msgpack1 \
-                        port:lua \
-                        port:luajit \
-                        port:lua-lpeg \
-                        port:lua-mpack \
-                        port:lua-luabitop
-
-cmake.out_of_source     yes
+                        port:luajit
 
 configure.args-append   -DUSE_BUNDLED=OFF \
                         -DLUA_PRG=${prefix}/bin/lua \
