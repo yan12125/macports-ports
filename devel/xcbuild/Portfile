@@ -4,8 +4,9 @@ PortSystem          1.0
 PortGroup           cmake 1.0
 PortGroup           github 1.0
 
-github.setup        facebook xcbuild 34e535ea7dc3
-version             0.1.99
+github.setup        facebook xcbuild 4b96d137af8b8397b9cc6cd341e3aed51833365f
+github.tarball_from archive
+version             20190719
 revision            0
 categories          devel
 platforms           darwin
@@ -18,9 +19,12 @@ description         xcbuild is an Xcode-compatible build tool with the goal of \
                     providing faster builds, better documentation of the build \
                     process and running on multiple platforms
 long_description    ${description}
+checksums           rmd160  b31fca50eb941cbc332a4e5d16b5c122a78e74a1 \
+                    sha256  fb986d06e8363f872c52445a761513d67e2d6c272e9c700997fc65a0e2db9cc4 \
+                    size    466071
 
-# Fetch from git instead of distfile because it needs submodules
-fetch.type          git
+# See https://github.com/facebook/xcbuild/issues/293
+patchfiles-append   patch-build-errors.diff
 
 depends_lib-append  port:libpng \
                     port:pkgconfig \
@@ -31,39 +35,10 @@ depends_lib-append  port:libpng \
 
 conflicts           libplist
 
-post-fetch {
-    system -W "${worksrcpath}" "git submodule update --init"
-}
-
-# use_configure no
-
-configure {
-    system -W "${worksrcpath}" "${configure.cmd} -G Ninja ${configure.args} ${worksrcpath}"
-}
-
-build {
-    system -W "${worksrcpath}" "ninja"
-}
-
-destroot {
-    system -W "${worksrcpath}" "DESTDIR=${destroot} ninja install"
-}
+configure.args-append \
+                    -DBUILD_TESTING=OFF
 
 post-destroot {
-    move {*}[glob ${destroot}/usr/local/usr/bin/*] ${destroot}${prefix}/bin
-    move {*}[glob ${destroot}/usr/local/usr/lib/*] ${destroot}${prefix}/lib
-    move ${destroot}/usr/local/Library/Xcode ${destroot}${prefix}/Library
-
-    # these files aren't needed on macos (they are built by the project for
-    # future work on linux)
-    delete ${destroot}${prefix}/bin/PlistBuddy
-    delete ${destroot}${prefix}/bin/lsbom
-    delete ${destroot}${prefix}/bin/plutil
-    delete ${destroot}${prefix}/bin/xcode-select
-    delete ${destroot}${prefix}/bin/xcodebuild
-    delete ${destroot}${prefix}/bin/xcrun
-
-    # these files are 1) incorrectly installed into /usr/local and 2)
-    # apparently added for a future windows project
-    delete ${destroot}/usr/local
+    move {*}[glob ${destroot}${prefix}/usr/bin/*] ${destroot}${prefix}/bin
+    move {*}[glob ${destroot}${prefix}/usr/lib/*] ${destroot}${prefix}/lib
 }

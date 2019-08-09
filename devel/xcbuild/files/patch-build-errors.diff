@@ -1,0 +1,62 @@
+diff --git Libraries/builtin/Headers/builtin/Driver.h Libraries/builtin/Headers/builtin/Driver.h
+index e2b3fdb1..38649769 100644
+--- Libraries/builtin/Headers/builtin/Driver.h
++++ Libraries/builtin/Headers/builtin/Driver.h
+@@ -21,7 +21,7 @@ namespace builtin {
+ class Driver {
+ protected:
+     Driver();
+-    ~Driver();
++    virtual ~Driver();
+ 
+ public:
+     virtual std::string name() = 0;
+diff --git Libraries/pbxproj/Headers/pbxproj/PBX/Object.h Libraries/pbxproj/Headers/pbxproj/PBX/Object.h
+index af496f60..f0046b09 100644
+--- Libraries/pbxproj/Headers/pbxproj/PBX/Object.h
++++ Libraries/pbxproj/Headers/pbxproj/PBX/Object.h
+@@ -34,6 +34,7 @@ protected:
+     Object(std::string const &isa);
+ 
+ public:
++    virtual ~Object() {};
+     inline std::string const &blueprintIdentifier() const
+     { return _blueprintIdentifier; }
+     inline void setBlueprintIdentifier(std::string const &identifier)
+diff --git Libraries/pbxspec/Sources/PBX/FileType.cpp Libraries/pbxspec/Sources/PBX/FileType.cpp
+index 909e5f0b..04a435ae 100644
+--- Libraries/pbxspec/Sources/PBX/FileType.cpp
++++ Libraries/pbxspec/Sources/PBX/FileType.cpp
+@@ -48,7 +48,7 @@ inherit(FileType::shared_ptr const &b)
+     auto base = this->base();
+ 
+     _uti                                     = Inherit::Override(_uti, base->_uti);
+-    _extensions                              = _extensions; /* Explicitly not inherited. */
++    /* _extensions is explicitly not inherited. */
+     _mimeTypes                               = Inherit::Combine(_mimeTypes, base->_mimeTypes);
+     _typeCodes                               = Inherit::Combine(_typeCodes, base->_typeCodes);
+     _filenamePatterns                        = Inherit::Combine(_filenamePatterns, base->_filenamePatterns);
+diff --git Libraries/xcscheme/Headers/xcscheme/XC/Action.h Libraries/xcscheme/Headers/xcscheme/XC/Action.h
+index 6590b7e6..0370d4cb 100644
+--- Libraries/xcscheme/Headers/xcscheme/XC/Action.h
++++ Libraries/xcscheme/Headers/xcscheme/XC/Action.h
+@@ -25,6 +25,7 @@ private:
+ 
+ public:
+     Action();
++    virtual ~Action() {};
+ 
+ public:
+     inline std::string const &buildConfiguration() const
+diff --git Libraries/xcworkspace/Headers/xcworkspace/XC/GroupItem.h Libraries/xcworkspace/Headers/xcworkspace/XC/GroupItem.h
+index 06dae5b3..cff48dc3 100644
+--- Libraries/xcworkspace/Headers/xcworkspace/XC/GroupItem.h
++++ Libraries/xcworkspace/Headers/xcworkspace/XC/GroupItem.h
+@@ -42,6 +42,7 @@ protected:
+     GroupItem(Type type);
+ 
+ public:
++    virtual ~GroupItem() {};
+     inline Type type() const
+     { return _type; }
+ 
