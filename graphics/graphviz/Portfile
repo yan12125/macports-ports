@@ -19,7 +19,9 @@ master_sites                    ${homepage}pub/graphviz/stable/SOURCES/
 platforms                       darwin
 use_parallel_build              yes
 dist_subdir                     ${my_name}
-distname                        ${my_name}-${version}
+# https://gitlab.com/graphviz/graphviz.gitlab.io/issues/1
+# https://gitlab.com/graphviz/graphviz/issues/1557
+distname                        ${name}
 
 description                     graph visualization software
 
