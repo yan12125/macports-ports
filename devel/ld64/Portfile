@@ -197,7 +197,8 @@ if {${subport} eq ${name}} {
         }
     }
 
-    if {[vercmp $xcodeversion 9.0] >= 0} {
+    if {[vercmp $xcodeversion 9.0] >= 0 ||
+        (${configure.compiler} eq "clang" && [vercmp [compiler.command_line_tools_version ${configure.compiler}] 900] >= 0)} {
         # only ld64_xcode speaks tapi at present
         default_variants +ld64_xcode
     }
