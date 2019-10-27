@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cmake 1.1
+PortGroup           github 1.0
+PortGroup           qt5 1.0
+
+categories          devel
+maintainers         {yan12125 @yan12125} openmaintainer
+license             LGPL-2.1
+description         Qt implementation of freedesktop.org xdg specs
+long_description    ${description}
+platforms           darwin
+
+github.setup        lxqt libqtxdg 3.4.0
+github.tarball_from releases
+use_xz              yes
+revision            0
+checksums           rmd160  55a7c86cbeeed611b3dd5eb783e5e3b6be77e78c \
+                    sha256  7bb5bbbb901915888107ddcd1f120801569970832bda656b3abeb6514c2ab66e \
+                    size    73060
+
+compiler.cxx_standard 2014
+
+qt5.depends_component \
+                    qtsvg
+# Needs lxqt-build-tools-devel instead of lxqt-build-tools as -devel includes
+# some fixes for macOS
+depends_build-append \
+                    port:lxqt-build-tools-devel
