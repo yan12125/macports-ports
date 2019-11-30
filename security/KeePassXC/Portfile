@@ -66,27 +66,17 @@ depends_lib-append      port:argon2 \
 
 compiler.cxx_standard   2011
 
-patchfiles              patch-no-deployqt.diff \
-                        patch-old-mac.diff
-
-# KeePassXC uses -fstack-protector-strong on Clang [1]. That flag is not
-# available until clang 602 [2] or upstream clang 3.5 [3]
-# [1] https://github.com/keepassxreboot/keepassxc/blob/develop/CMakeLists.txt
-# [2] https://opensource.apple.com/source/clang/clang-600.0.57/src/tools/clang/lib/CodeGen/CodeGenModule.cpp.auto.html
-#     https://opensource.apple.com/source/clang/clang-602.0.53/src/tools/clang/lib/CodeGen/CodeGenModule.cpp.auto.html
-# [3] https://github.com/llvm-project/clang/blob/release_34/lib/CodeGen/CodeGenModule.cpp
-#     https://github.com/llvm-project/clang/blob/release_35/lib/CodeGen/CodeGenModule.cpp
-compiler.blacklist-append {clang < 602}
-
-pre-configure {
-    reinplace "s#/usr/local/bin#${prefix}/bin#" \
-        ${worksrcpath}/CMakeLists.txt
-}
+# KeePassXC uses @available. That language feature is not
+# available until Xcode 9.0 [1] or upstream clang 5.0 [2].
+# [1] https://developer.apple.com/library/archive/releasenotes/DeveloperTools/RN-Xcode/Chapters/Introduction.html
+# [2] https://clang.llvm.org/docs/LanguageExtensions.html
+compiler.blacklist-append {clang < 900} macports-clang-3.*
 
 configure.pre_args-append \
     -DCMAKE_INSTALL_PREFIX=${applications_dir} \
     -DCMAKE_INSTALL_MANDIR=${prefix}/share/man \
     -DKEEPASSXC_BUILD_TYPE=Release \
+    -DMACDEPLOYQT_EXE=/usr/bin/true \
     -DWITH_XC_BROWSER=ON \
     -DWITH_XC_KEESHARE=ON \
     -DWITH_XC_KEESHARE_SECURE=ON \
